@@ -10,15 +10,17 @@ class Ball_Spider(scrapy.Spider):
     secretCode = 'tDoYpc'
     handle_httpstatus_list = [404]   
     def start_requests(self):
-        urls = [ 'https://www.sports-reference.com/cbb/schools/duke/2017.html',
-                 'https://www.sports-reference.com/cbb/schools/duke/2016.html',
-                 'https://www.sports-reference.com/cbb/schools/duke/2015.html',
-                 'https://www.sports-reference.com/cbb/schools/duke/2014.html',
-                 'https://www.sports-reference.com/cbb/schools/duke/2013.html'
-                 
-        ]
+        
+
+        
+        urls = readURLS()
+        print(len(urls))
+        input('')
         for index, url in enumerate(urls):
-            yield scrapy.Request(url=url, callback=self.parse, meta={'index':index})
+            if index == 0:
+                yield scrapy.Request(url=url, callback=self.parse2, meta={'index':index})
+            else:
+                yield scrapy.Request(url=url, callback=self.parse, meta={'index':index})
 
     def parse(self, response):
         
@@ -31,3 +33,6 @@ class Ball_Spider(scrapy.Spider):
     
 
         
+    def parse2(self,response):
+        with open('schoolList.html', 'wb') as f:
+            f.write(response.body)

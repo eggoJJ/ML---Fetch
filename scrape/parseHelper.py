@@ -56,4 +56,30 @@ def parseHTML():
     else:
         print("The file does not exist")    
 
+
+def parseSchools():
+    with open('schoolList.html', 'r') as f:
+        data = f.read()
+    soup = BeautifulSoup(data, 'html.parser')
+
+    ayeRefs = soup.find_all('a' ,href = True)
+
+    schoolEnds = []
+    for i in range (34,470):
+        #temp = str(ayeRefs[i])(.split('schools'))[1].split('/">')[0]
+        temp = str(ayeRefs[i]).split('schools')[1].split('">')[0]
+        schoolEnds.append('https://www.sports-reference.com/cbb/schools' + temp + '2017.html')
+        schoolEnds.append('https://www.sports-reference.com/cbb/schools' + temp + '2016.html')
+        schoolEnds.append('https://www.sports-reference.com/cbb/schools' + temp + '2015.html')
+        schoolEnds.append('https://www.sports-reference.com/cbb/schools' + temp + '2014.html')
+        schoolEnds.append('https://www.sports-reference.com/cbb/schools' + temp + '2013.html')
+
+    with open('schoolURLS.txt', 'w') as filehandle:
+        filehandle.writelines("%s\n" % urls for urls in schoolEnds)
+
+def readURLS():
+    with open('schoolURLS.txt', 'r') as f:
+        x = f.readlines()
+    return x
+parseSchools()
 #parseHTML()
